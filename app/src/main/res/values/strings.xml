@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">camerabuilder</string>
+    <string name="where_cams_find_their_match">Where cams find their match</string>
+    <string name="sign_in_to_help_match_them">Sign In to help match them</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up_for_an_account"><u>SIGN UP FOR AN ACCOUNT</u></string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
 </resources>

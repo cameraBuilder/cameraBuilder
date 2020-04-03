@@ -1,5 +1,6 @@
 package com.hackathon.camerabuilder;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import androidx.lifecycle.LifecycleObserver;
@@ -18,15 +19,18 @@ public class ApplicationContext extends Application implements LifecycleObserver
 
     private static ApplicationContext applicationContext;
     public Repository repository;
+
     // to let all requests pass and trust all devices for sake of development
     final  TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
 
+                @SuppressLint("TrustAllX509TrustManager")
                 @Override
                 public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
                                                String authType) {
                 }
 
+                @SuppressLint("TrustAllX509TrustManager")
                 @Override
                 public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
                                                String authType) {

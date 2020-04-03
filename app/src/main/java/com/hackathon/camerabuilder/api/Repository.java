@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hackathon.camerabuilder.api.model.BaseResponse;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
+import com.hackathon.camerabuilder.api.model.UserInfo;
+
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.Objects;
@@ -17,6 +19,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.hackathon.camerabuilder.api.ApiHelper.LOGIN;
+import static com.hackathon.camerabuilder.api.ApiHelper.REGISTER;
 
 public class Repository {
 
@@ -53,6 +58,83 @@ public class Repository {
                 callBack.onError(baseResponse.getMessage());
             }
 
+        });
+    }
+
+    public void setUserInfo(String userInfo) {
+        sharedPreferences.edit().putString("USER_INFO", userInfo).apply();
+    }
+
+    public void logout() {
+        sharedPreferences.edit().remove("USER_INFO").apply();
+    }
+
+    public UserInfo getUserInfo() {
+        String userString = sharedPreferences.getString("USER_INFO","");
+        if (TextUtils.isEmpty(userString)) {
+            return null;
+        }
+        return gson.fromJson(userString, UserInfo.class);
+    }
+
+
+    public <T> void login(String email, String password, final NetworkCallBack<UserInfo> callBack) {
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(LOGIN)
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse<UserInfo> baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(),
+                        TypeToken.getParameterized(BaseResponse.class, UserInfo.class).getType());
+                if (response.code() == 200 || response.code() == 201) {
+                    callBack.onSuccess(baseResponse.getData(), baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
+
+        });
+    }
+
+    public  void register(String email, String password, String userName, final NetworkCallBack callBack) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .add("username", userName)
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(REGISTER)
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse<UserInfo> baseResponse = gson.fromJson(response.body().string(),BaseResponse.class);
+                if (response.code() == 200) {
+                    callBack.onSuccess(null, baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
         });
     }
     }

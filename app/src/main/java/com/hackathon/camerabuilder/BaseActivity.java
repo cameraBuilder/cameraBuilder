@@ -1,7 +1,7 @@
 package com.hackathon.camerabuilder;
 
+import android.app.Activity;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -40,9 +40,9 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         return ApplicationContext.getInstance();
     }
 
-    protected void showLoader(String text) {
+    protected void showLoader(String text, Activity activity) {
         if (loaderDialog == null) {
-            loaderDialog = new LoaderDialog(this, "Loading");
+            loaderDialog = new LoaderDialog(activity, "Loading");
         }
         loaderDialog.setText(text);
         if (loaderDialog.isShowing()) {
