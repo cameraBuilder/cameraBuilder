@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken;
 import com.hackathon.camerabuilder.api.model.BaseResponse;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
 import com.hackathon.camerabuilder.api.model.UserInfo;
-
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.Objects;

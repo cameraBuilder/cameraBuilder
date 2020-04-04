@@ -3,7 +3,6 @@ package com.hackathon.camerabuilder.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
 import com.hackathon.camerabuilder.BaseActivity;
 import com.hackathon.camerabuilder.R;
 import com.hackathon.camerabuilder.databinding.ActivitySplashBinding;
@@ -18,17 +17,14 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (repository.getUserInfo() == null) {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                }
-                else {
-                    MainActivity.launch(SplashActivity.this);
-                }
-                finish();
+        new Handler().postDelayed(() -> {
+            if (repository.getUserInfo() == null) {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             }
+            else {
+                MainActivity.launch(SplashActivity.this);
+            }
+            finish();
         }, 2000);
 
     }

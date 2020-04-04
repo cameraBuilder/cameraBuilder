@@ -30,8 +30,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
                         public void onError(String message) {
                             runOnUiThread(() -> {
                                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                mViewDataBinding.progressCircular.setVisibility(View.GONE);
                             });
-                            mViewDataBinding.progressCircular.setVisibility(View.GONE);
                         }
                         @Override
                         public void onSuccess(UserInfo data, String message) {
