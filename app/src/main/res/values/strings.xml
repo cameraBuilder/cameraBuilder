@@ -8,4 +8,9 @@
     <string name="sign_up_for_an_account"><u>SIGN UP FOR AN ACCOUNT</u></string>
     <string name="username">Username</string>
     <string name="register">Register</string>
+    <string name="find_your_cam">Find your cam</string>
+    <string name="lenses">Lenses</string>
+    <string name="flash_it">FLash it</string>
+    <string name="adapters">Adapters</string>
+    <string name="my_bag">My Bag</string>
 </resources>

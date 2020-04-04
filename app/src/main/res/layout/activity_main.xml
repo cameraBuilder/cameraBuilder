@@ -1,21 +1,345 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_hello"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Home"
+            app:titleTextColor="#ffffff"
+            app:navigationIcon="@drawable/ic_home"
+            />
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/btn_logout"
+                android:gravity="center"
+                tools:text="UserName"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:layout_marginEnd="5dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"/>
+
+
+            <ImageButton
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lock_open"
+                android:background="@null"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                />
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar"
+        android:orientation="vertical"
+        android:divider="@drawable/v_divider"
+        android:showDividers="beginning|middle|end"
+        >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:divider="@drawable/divider"
+        android:showDividers="beginning|middle|end"
+        >
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="8dp"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="#ffffff"
+                    app:contentPadding="5dp"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_above="@id/tv_kit"
+                            app:roundedCornerRadius="8dp"
+                            app:actualImageResource="@drawable/kits"
+                            app:actualImageScaleType="centerCrop"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_kit"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_height="wrap_content"
+                            android:text="Build your kit"/>
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:divider="@drawable/divider"
+            android:showDividers="beginning|middle|end"
+            >
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#ffffff"
+                app:contentPadding="5dp"
+                android:layout_weight="1"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/tv_camera"
+                        app:roundedCornerRadius="8dp"
+                        app:actualImageResource="@drawable/cameras"
+                        app:actualImageScaleType="fitXY"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_camera"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/find_your_cam"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#ffffff"
+                app:contentPadding="5dp"
+                android:layout_weight="1"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/tv_lense"
+                        app:roundedCornerRadius="8dp"
+                        app:actualImageResource="@drawable/lense"
+                        app:actualImageScaleType="fitXY"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_lense"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lenses"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@drawable/divider"
+
+            android:showDividers="beginning|middle|end">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#ffffff"
+                app:contentPadding="5dp"
+                android:layout_weight="1"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/tv_flash"
+                        app:roundedCornerRadius="8dp"
+                        app:actualImageResource="@drawable/flash"
+                        app:actualImageScaleType="fitXY"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_flash"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/flash_it"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#ffffff"
+                app:contentPadding="5dp"
+                android:layout_weight="1"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/tv_adapter"
+                        app:roundedCornerRadius="8dp"
+                        app:actualImageResource="@drawable/adpater"
+                        app:actualImageScaleType="fitXY"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_adapter"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/adapters"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@drawable/divider"
+            android:showDividers="beginning|middle|end">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="#ffffff"
+                app:contentPadding="5dp"
+
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/tv_items"
+                        app:roundedCornerRadius="8dp"
+                        app:actualImageResource="@drawable/selected_items"
+                        app:actualImageScaleType="centerCrop"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_items"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_bag"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
 </layout>
