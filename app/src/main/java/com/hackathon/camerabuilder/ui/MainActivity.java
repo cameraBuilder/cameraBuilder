@@ -3,6 +3,7 @@ package com.hackathon.camerabuilder.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import com.hackathon.camerabuilder.BaseActivity;
 import com.hackathon.camerabuilder.R;
 import com.hackathon.camerabuilder.databinding.ActivityMainBinding;
@@ -28,5 +29,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finishAffinity();
         });
+    }
+
+    public void openProduct(View view) {
+        ProductsActivity.launch(this,(String) view.getTag());
     }
 }

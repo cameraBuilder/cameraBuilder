@@ -3,7 +3,6 @@ package com.hackathon.camerabuilder.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.hackathon.camerabuilder.BaseActivity;
 import com.hackathon.camerabuilder.R;
@@ -26,24 +25,25 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
             mViewDataBinding.progressCircular.setVisibility(View.VISIBLE);
             repository.login( mViewDataBinding.etEmail.getText().toString(),
                     mViewDataBinding.etPassword.getText().toString(), new NetworkCallBack<UserInfo>() {
-                        @Override
-                        public void onError(String message) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                                mViewDataBinding.progressCircular.setVisibility(View.GONE);
-                            });
-                        }
-                        @Override
-                        public void onSuccess(UserInfo data, String message) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                                repository.setUserInfo(new Gson().toJson(data));
-                                MainActivity.launch(LoginActivity.this);
-                                mViewDataBinding.progressCircular.setVisibility(View.GONE);
-                                finish();
-                            });
-                        }
+
+                @Override
+                public void onError(String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        mViewDataBinding.progressCircular.setVisibility(View.GONE);
                     });
+                }
+
+                @Override
+                public void onSuccess(UserInfo data, String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        repository.setUserInfo(new Gson().toJson(data));
+                        MainActivity.launch(LoginActivity.this);
+                        mViewDataBinding.progressCircular.setVisibility(View.GONE);
+                        finish();
+                    });
+                }});
         });
 
         mViewDataBinding.tvRegister.setOnClickListener(view -> {

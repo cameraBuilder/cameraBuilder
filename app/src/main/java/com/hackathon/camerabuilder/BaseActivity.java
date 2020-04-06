@@ -19,8 +19,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         mViewDataBinding.setLifecycleOwner(this);
     }
 
-
-
     public abstract int getLayoutResource();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +26,12 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         super.onCreate(savedInstanceState);
         performDataBinding();
         repository = ApplicationContext.getInstance().repository;
+
         if (loaderDialog == null) {
             loaderDialog = new LoaderDialog(this, "Loading");
         }
 
     }
-
 
     @Override
     public ApplicationContext getApplicationContext() {

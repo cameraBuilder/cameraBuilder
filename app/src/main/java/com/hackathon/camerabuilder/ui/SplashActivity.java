@@ -18,7 +18,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new Handler().postDelayed(() -> {
-            if (repository.getUserInfo() == null) {
+            if (repository == null || repository.getUserInfo() == null) {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             }
             else {
@@ -26,6 +26,5 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             }
             finish();
         }, 2000);
-
     }
 }

@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import androidx.lifecycle.LifecycleObserver;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.hackathon.camerabuilder.api.Repository;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -21,7 +23,7 @@ public class ApplicationContext extends Application implements LifecycleObserver
     public Repository repository;
 
     // to let all requests pass and trust all devices for sake of development
-    final  TrustManager[] trustAllCerts = new TrustManager[]{
+    final  static TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
 
                 @SuppressLint("TrustAllX509TrustManager")
@@ -42,6 +44,8 @@ public class ApplicationContext extends Application implements LifecycleObserver
             }
     };
 
+
+
     public ApplicationContext() {
 
     }
@@ -49,33 +53,32 @@ public class ApplicationContext extends Application implements LifecycleObserver
     @Override
     public void onCreate() {
         super.onCreate();
-        Fresco.initialize(this);
+        final SSLContext sslContext;
         applicationContext = this;
+        try {
+            sslContext = SSLContext.getInstance(SSL);
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+            builder.hostnameVerifier((hostname, session) -> true);
+            OkHttpClient httpClient = builder.connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .writeTimeout(1200, TimeUnit.SECONDS)
+                    .build();
+            repository = new Repository(getSharedPreferences("com.hackathon.camerabuilder", Context.MODE_PRIVATE), httpClient);
+            ImagePipelineConfig config = OkHttpImagePipelineConfigFactory.newBuilder(this, httpClient).build();
+            Fresco.initialize(this, config);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
     }
+
 
 
     public static ApplicationContext getInstance() {
         if (applicationContext == null) {
             applicationContext = new ApplicationContext();
-        }
-        if (applicationContext.repository == null) {
-            final SSLContext sslContext;
-            try {
-                // set our dummy ssl certificate that trust all :)
-                sslContext = SSLContext.getInstance(SSL);
-                sslContext.init(null, applicationContext.trustAllCerts, new java.security.SecureRandom());
-                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-                OkHttpClient.Builder builder = new OkHttpClient.Builder();
-                builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) applicationContext.trustAllCerts[0]);
-                builder.hostnameVerifier((hostname, session) -> true);
-                OkHttpClient httpClient = builder.connectTimeout(120, TimeUnit.SECONDS)
-                        .readTimeout(120, TimeUnit.SECONDS)
-                        .writeTimeout(1200, TimeUnit.SECONDS)
-                        .build();
-                applicationContext.repository = new Repository(applicationContext.getSharedPreferences("com.hackathon.camerabuilder", Context.MODE_PRIVATE), httpClient);
-            } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                e.printStackTrace();
-            }
         }
         return applicationContext ;
     }
