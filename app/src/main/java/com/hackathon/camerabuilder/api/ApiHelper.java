@@ -13,4 +13,5 @@ public class ApiHelper {
     final static String GET_ALL_FLASHES = BASE_URL + "flashes";
     final static String GET_FLASH = BASE_URL + "flash";
     final static String GET_CAM = BASE_URL + "camera";
+    final static String ADD_TO_BAG = BASE_URL + "addToBag";
 }

@@ -16,13 +16,14 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         >
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
+                android:id="@+id/mc_container"
                 app:cardCornerRadius="8dp"
                 android:layout_height="match_parent">
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -37,10 +38,14 @@
                     />
             </com.google.android.material.card.MaterialCardView>
 
+
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_toEndOf="@+id/mc_container"
+                android:layout_toStartOf="@+id/btn_add"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:orientation="vertical">
@@ -79,6 +84,16 @@
                     />
 
             </LinearLayout>
-        </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add"
+                android:layout_width="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_height="match_parent"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_add_circle"
+                />
+
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

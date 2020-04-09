@@ -10,6 +10,7 @@ import com.hackathon.camerabuilder.BaseActivity;
 import com.hackathon.camerabuilder.R;
 import com.hackathon.camerabuilder.api.model.Camera;
 import com.hackathon.camerabuilder.api.model.Flash;
+import com.hackathon.camerabuilder.api.model.Lens;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
 import com.hackathon.camerabuilder.databinding.ActivityProductsBinding;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
         });
 
         switch (Objects.requireNonNull(title)) {
-
             case "Cameras":
                 repository.getAllCams(new NetworkCallBack<ArrayList<Camera>>() {
                     @Override
@@ -51,7 +51,17 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
                     @Override
                     public void onSuccess(ArrayList<Camera> data, String message) {
                         runOnUiThread(() -> {
-                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data));
+                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data, product -> {
+                                repository.addToBag(product.getId() + "", "C", new NetworkCallBack() {
+                                    @Override
+                                    public void onError(String message) {
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Object data, String message) {
+                                    }
+                                });
+                            }));
                             mViewDataBinding.progress.setVisibility(View.GONE);
                         });
                     }
@@ -70,7 +80,9 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
                     @Override
                     public void onSuccess(ArrayList<Lens> data, String message) {
                         runOnUiThread(() -> {
-                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data));
+                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data, product -> {
+
+                            }));
                             mViewDataBinding.progress.setVisibility(View.GONE);
                         });
                     }
@@ -89,7 +101,9 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
                     @Override
                     public void onSuccess(ArrayList<Adapter> data, String message) {
                         runOnUiThread(() -> {
-                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data));
+                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data, product -> {
+
+                            }));
                             mViewDataBinding.progress.setVisibility(View.GONE);
                         });
                     }
@@ -108,7 +122,9 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
                     @Override
                     public void onSuccess(ArrayList<Flash> data, String message) {
                         runOnUiThread(() -> {
-                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data));
+                            mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data, product -> {
+
+                            }));
                             mViewDataBinding.progress.setVisibility(View.GONE);
                         });
                     }

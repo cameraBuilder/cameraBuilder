@@ -1,6 +1,5 @@
-package com.hackathon.camerabuilder.ui;
+package com.hackathon.camerabuilder.api.model;
 
-import com.hackathon.camerabuilder.api.model.Product;
 
 public class Lens extends Product {
 

@@ -16,12 +16,23 @@
     <string name="name">Name</string>
     <string name="name_bold">Name:</string>
     <string name="brand">Brand:</string>
+    <string name="brand_form">Brand</string>
     <string name="mount">Mount:</string>
+    <string name="mount_form">Mount</string>
     <string name="type">Type:</string>
+    <string name="type_form">Type</string>
     <string name="build_your_kit">Build your kit</string>
     <string name="cameras">Cameras</string>
     <string name="flashes">Flashes</string>
     <string name="compatible_mount">Compatible mount:</string>
-    <string name="compatibe_cam_mount">Compatible camera mount:</string>
-    <string name="copatibe_lens_mount">Compatible lens mount:</string>
+    <string name="compatibe_cam_mount">Camera mount:</string>
+    <string name="copatibe_lens_mount">Lens mount:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_to_bag">Add To Bag</string>
+    <string name="full_specifications">Full specifications</string>
+    <string name="copat">Compatible Camera Mount</string>
+    <string name="com_cam">Compatible camera mount</string>
+    <string name="cop_lens">Compatible lens mount</string>
 </resources>

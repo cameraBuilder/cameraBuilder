@@ -1,9 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.hackathon.camerabuilder.ui.ProductActivity">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="#ffffff"
+                app:title="dar"
+                app:navigationIcon="@drawable/ic_back"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appbar"
+            android:orientation="vertical"
+            tools:context="com.hackathon.camerabuilder.ui.ProductActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_cameras"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/dots_indicator"
+            />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dots_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            app:dotsColor="#9b9b9b"
+            android:layout_alignParentBottom="true"
+            app:dotsCornerRadius="1dp"
+            app:dotsSize="3dp"
+            app:dotsSpacing="2dp"
+            app:dotsWidthFactor="5"
+            app:progressMode="true"
+            app:selectedDotColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:divider="@drawable/divider_separator"
+        android:showDividers="beginning|middle"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp"
+            android:id="@+id/rl_name"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:textStyle="bold"
+                android:text="@string/name"/>
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_brand_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:textStyle="bold"
+                android:text="@string/brand_form"/>
+
+
+            <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_type"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:textStyle="bold"
+                android:text="Type"/>
+
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mount"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_mount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:textStyle="bold"
+                android:text="Mount"/>
+
+
+            <TextView
+                android:id="@+id/tv_mount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:layout_alignParentEnd="true"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="15dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_specs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#939292"
+                android:textStyle="bold"
+                android:text="@string/full_specifications"/>
+
+
+            <TextView
+                android:id="@+id/tv_specs"
+                android:layout_toEndOf="@+id/tv_specs_label"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:ellipsize="end"
+                android:onClick="openSite"
+                android:textSize="14sp"
+                android:textColor="#2196F3"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="15dp"
+            android:text="@string/add_to_bag"
+            app:icon="@drawable/ic_add_circle"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+    </RelativeLayout>
+</layout>

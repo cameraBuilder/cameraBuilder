@@ -10,7 +10,7 @@ import com.hackathon.camerabuilder.api.model.Flash;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
 import com.hackathon.camerabuilder.api.model.UserInfo;
 import com.hackathon.camerabuilder.ui.Adapter;
-import com.hackathon.camerabuilder.ui.Lens;
+import com.hackathon.camerabuilder.api.model.Lens;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
+import static com.hackathon.camerabuilder.api.ApiHelper.ADD_TO_BAG;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ADAPTER;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_ADAPTERS;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_CAMS;
@@ -33,6 +33,7 @@ import static com.hackathon.camerabuilder.api.ApiHelper.GET_FLASH;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_LENS;
 import static com.hackathon.camerabuilder.api.ApiHelper.LOGIN;
 import static com.hackathon.camerabuilder.api.ApiHelper.REGISTER;
+
 
 public class Repository {
 
@@ -116,6 +117,7 @@ public class Repository {
     }
 
     public  void register(String email, String password, String userName, final NetworkCallBack<UserInfo> callBack) {
+
         RequestBody requestBody = new FormBody.Builder()
                 .add("email", email)
                 .add("password", password)
@@ -170,6 +172,7 @@ public class Repository {
     }
 
     public  void getAllLenses(final NetworkCallBack<ArrayList<Lens>> callBack) {
+
         Request request  = new Request.Builder()
                 .url(GET_ALL_LENSES)
                 .get()
@@ -194,6 +197,7 @@ public class Repository {
     }
 
     public  void getAllAdapters(final NetworkCallBack<ArrayList<Adapter>> callBack) {
+
         Request request  = new Request.Builder()
                 .url(GET_ALL_ADAPTERS)
                 .get()
@@ -214,10 +218,12 @@ public class Repository {
                 callBack.onError(baseResponse.getMessage());
             }
         });
+
     }
 
 
     public  void getAllFlashes(final NetworkCallBack<ArrayList<Flash>> callBack) {
+
         Request request  = new Request.Builder()
                 .url(GET_ALL_FLASHES)
                 .get()
@@ -242,6 +248,7 @@ public class Repository {
 
 
     public  void getFlash(int flashID,final NetworkCallBack<Flash> callBack) {
+
         Request request  = new Request.Builder()
                 .url(GET_FLASH + "/" + flashID)
                 .get()
@@ -328,6 +335,36 @@ public class Repository {
                 BaseResponse<Camera> baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(),new TypeToken<Camera>(){}.getType());
                 if (response.code() == 200) {
                     callBack.onSuccess(baseResponse.getData(), baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
+        });
+    }
+
+    public  void addToBag(String productId, String productTag, final NetworkCallBack callBack) {
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("productId", productId)
+                .add("productTag", productTag)
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(ADD_TO_BAG)
+                .addHeader("Authorization ", getUserInfo().getToken())
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(),BaseResponse.class);
+                if (response.code() == 200) {
+                    callBack.onSuccess(null, baseResponse.getMessage());
                     return;
                 }
                 callBack.onError(baseResponse.getMessage());

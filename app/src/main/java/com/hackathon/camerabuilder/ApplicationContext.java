@@ -17,6 +17,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import static org.apache.http.conn.ssl.SSLSocketFactory.SSL;
+
+
 public class ApplicationContext extends Application implements LifecycleObserver {
 
     private static ApplicationContext applicationContext;
@@ -65,6 +67,7 @@ public class ApplicationContext extends Application implements LifecycleObserver
             OkHttpClient httpClient = builder.connectTimeout(120, TimeUnit.SECONDS)
                     .readTimeout(120, TimeUnit.SECONDS)
                     .writeTimeout(1200, TimeUnit.SECONDS)
+                    .authenticator((route, response) -> null)
                     .build();
             repository = new Repository(getSharedPreferences("com.hackathon.camerabuilder", Context.MODE_PRIVATE), httpClient);
             ImagePipelineConfig config = OkHttpImagePipelineConfigFactory.newBuilder(this, httpClient).build();
