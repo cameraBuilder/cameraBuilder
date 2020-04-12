@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,27 +11,84 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#ffffff"
-            app:title="Kits"
+            app:title="Kit"
             app:navigationIcon="@drawable/ic_back"
             />
+
     </com.google.android.material.appbar.AppBarLayout>
+
+
+    <TextView
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:drawableTop="@drawable/ic_refresh"
+        android:text="@string/clear"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_below="@+id/appbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_kit"
         android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar"
+        android:layout_below="@+id/btn_refresh"
+        android:layout_above="@+id/ll_buttons"
         />
 
     <LinearLayout
+        android:id="@+id/ll_buttons"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_choose"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAllCaps="false"
+            android:text="@string/please_choose_a_camera"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_choose_flash"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorAccent"
+            android:text="@string/please_choose_a_flash"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorAccent"
+            android:text="@string/save"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>
+</layout>

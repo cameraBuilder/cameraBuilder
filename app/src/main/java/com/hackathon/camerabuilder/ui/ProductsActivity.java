@@ -81,7 +81,6 @@ public class ProductsActivity extends BaseActivity<ActivityProductsBinding> {
                     public void onSuccess(ArrayList<Lens> data, String message) {
                         runOnUiThread(() -> {
                             mViewDataBinding.rvProducts.setAdapter(new ProductsAdapter<>(data, product -> {
-
                             }));
                             mViewDataBinding.progress.setVisibility(View.GONE);
                         });

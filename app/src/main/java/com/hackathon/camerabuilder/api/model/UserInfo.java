@@ -2,6 +2,7 @@ package com.hackathon.camerabuilder.api.model;
 
 public class UserInfo {
 
+    private Integer id;
     private String token;
     private String username;
     private String email;
@@ -37,5 +38,13 @@ public class UserInfo {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

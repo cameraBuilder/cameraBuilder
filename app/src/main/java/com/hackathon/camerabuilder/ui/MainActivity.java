@@ -34,4 +34,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     public void openProduct(View view) {
         ProductsActivity.launch(this,(String) view.getTag());
     }
+
+    public void openKits(View view) {
+        KitsActivity.launch(this);
+    }
 }

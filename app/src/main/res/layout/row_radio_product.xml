@@ -21,9 +21,16 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"/>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:id="@+id/mc_container"
+                android:layout_toEndOf="@id/radio"
                 app:cardCornerRadius="8dp"
                 android:layout_height="match_parent">
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -37,7 +44,6 @@
                     app:viewAspectRatio="1.0"
                     />
             </com.google.android.material.card.MaterialCardView>
-
 
 
             <LinearLayout
@@ -83,16 +89,6 @@
                     />
 
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add"
-                android:layout_width="60dp"
-                android:visibility="gone"
-                android:layout_alignParentEnd="true"
-                android:layout_height="match_parent"
-                app:cornerRadius="8dp"
-                app:icon="@drawable/ic_add_circle"
-                />
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>

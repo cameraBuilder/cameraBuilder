@@ -4,9 +4,11 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hackathon.camerabuilder.api.model.ActualKit;
 import com.hackathon.camerabuilder.api.model.BaseResponse;
 import com.hackathon.camerabuilder.api.model.Camera;
 import com.hackathon.camerabuilder.api.model.Flash;
+import com.hackathon.camerabuilder.api.model.Kit;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
 import com.hackathon.camerabuilder.api.model.UserInfo;
 import com.hackathon.camerabuilder.ui.Adapter;
@@ -23,17 +25,19 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import static com.hackathon.camerabuilder.api.ApiHelper.ADD_TO_BAG;
+import static com.hackathon.camerabuilder.api.ApiHelper.CREATE_KIT;
+import static com.hackathon.camerabuilder.api.ApiHelper.Find_Compatible_Adapters;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ADAPTER;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_ADAPTERS;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_CAMS;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_FLASHES;
+import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_KITS;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_ALL_LENSES;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_CAM;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_FLASH;
 import static com.hackathon.camerabuilder.api.ApiHelper.GET_LENS;
 import static com.hackathon.camerabuilder.api.ApiHelper.LOGIN;
 import static com.hackathon.camerabuilder.api.ApiHelper.REGISTER;
-
 
 public class Repository {
 
@@ -112,7 +116,6 @@ public class Repository {
                 }
                 callBack.onError(baseResponse.getMessage());
             }
-
         });
     }
 
@@ -196,6 +199,37 @@ public class Repository {
         });
     }
 
+    public void findCompatibleAdapters(String cameraMount, String lensMount, final NetworkCallBack<ArrayList<Adapter>> callBack){
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("cameraMount", cameraMount)
+                .add("lensMount", lensMount)
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(Find_Compatible_Adapters)
+                .addHeader("Authorization", getUserInfo().getToken())
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse<ArrayList<Adapter>> baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(),new TypeToken<BaseResponse<ArrayList<Adapter>>>(){}.getType());
+                if (response.code() == 200) {
+                    callBack.onSuccess(baseResponse.getData(), baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
+        });
+
+    }
+
     public  void getAllAdapters(final NetworkCallBack<ArrayList<Adapter>> callBack) {
 
         Request request  = new Request.Builder()
@@ -237,6 +271,36 @@ public class Repository {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 BaseResponse<ArrayList<Flash>> baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(), new TypeToken<BaseResponse<ArrayList<Flash>>>(){}.getType());
+                if (response.code() == 200) {
+                    callBack.onSuccess(baseResponse.getData(), baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
+        });
+    }
+
+
+    public  void getAllKits(final NetworkCallBack<ArrayList<ActualKit>> callBack) {
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("id", getUserInfo().getId() +"")
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(GET_ALL_KITS)
+                .addHeader("Authorization", getUserInfo().getToken())
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse<ArrayList<ActualKit>> baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(), new TypeToken<BaseResponse<ArrayList<ActualKit>>>(){}.getType());
                 if (response.code() == 200) {
                     callBack.onSuccess(baseResponse.getData(), baseResponse.getMessage());
                     return;
@@ -351,7 +415,7 @@ public class Repository {
 
         Request request  = new Request.Builder()
                 .url(ADD_TO_BAG)
-                .addHeader("Authorization ", getUserInfo().getToken())
+                .addHeader("Authorization", getUserInfo().getToken())
                 .post(requestBody)
                 .build();
 
@@ -369,6 +433,39 @@ public class Repository {
                 }
                 callBack.onError(baseResponse.getMessage());
             }
+        });
+    }
+
+
+    public  void createKit(Kit kit , final NetworkCallBack callBack) {
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("kit", gson.toJson(kit))
+                .build();
+
+        Request request  = new Request.Builder()
+                .url(CREATE_KIT)
+                .addHeader("Authorization", getUserInfo().getToken())
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callBack.onError(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                BaseResponse baseResponse = gson.fromJson(Objects.requireNonNull(response.body()).string(),BaseResponse.class);
+                if (response.code() == 200) {
+                    callBack.onSuccess(null, baseResponse.getMessage());
+                    return;
+                }
+                callBack.onError(baseResponse.getMessage());
+            }
+            
         });
     }
 

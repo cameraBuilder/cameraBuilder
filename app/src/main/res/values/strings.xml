@@ -35,4 +35,12 @@
     <string name="copat">Compatible Camera Mount</string>
     <string name="com_cam">Compatible camera mount</string>
     <string name="cop_lens">Compatible lens mount</string>
+    <string name="clear">Clear</string>
+    <string name="please_choose_a_camera">Please choose a camera</string>
+    <string name="please_choose_a_flash">Please choose a flash</string>
+    <string name="create_new_kit">Create new kit</string>
+    <string name="choose_item">Choose Item</string>
+    <string name="scx">Please choose a lens</string>
+    <string name="save">Save</string>
+    <string name="note_maximum_8_items_are_shown_if_you_want_to_view_all_press_on_item">Note: maximum 8 items are shown if you want to view all press on item</string>
 </resources>
