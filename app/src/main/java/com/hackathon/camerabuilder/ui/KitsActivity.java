@@ -20,9 +20,11 @@ import com.hackathon.camerabuilder.databinding.ActivityKitsBinding;
 import java.util.ArrayList;
 
 
-public class KitsActivity extends BaseActivity<ActivityKitsBinding> {
+public class KitsActivity extends BaseActivity<ActivityKitsBinding> implements KitsAdapter.OnKitListener {
 
     private ArrayList<ActualKit> actualKits;
+    private KitsAdapter kitsAdapter;
+
     public static void launch(Activity activity) {
         activity.startActivity(new Intent(activity, KitsActivity.class));
     }
@@ -96,10 +98,19 @@ public class KitsActivity extends BaseActivity<ActivityKitsBinding> {
                     kitsWithProducts.add(kitWithProducts);
                 }
                 runOnUiThread(() ->{
-                    mViewDataBinding.rvKits.setAdapter(new KitsAdapter(kitsWithProducts));
+                    kitsAdapter = new KitsAdapter(kitsWithProducts, KitsActivity.this);
+                    mViewDataBinding.rvKits.setAdapter(kitsAdapter);
                     mViewDataBinding.progressCircular.setVisibility(View.GONE);
                 });
             }
         });
     }
+
+
+
+    @Override
+    public void onKitClick(int position) {
+        KitActivity.launch(this, actualKits.get(position));
+    }
+
 }

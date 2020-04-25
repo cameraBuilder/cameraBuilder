@@ -1,16 +1,22 @@
 package com.hackathon.camerabuilder.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
 import com.hackathon.camerabuilder.BaseActivity;
 import com.hackathon.camerabuilder.R;
+import com.hackathon.camerabuilder.api.model.ActualKit;
 import com.hackathon.camerabuilder.api.model.Camera;
 import com.hackathon.camerabuilder.api.model.Flash;
 import com.hackathon.camerabuilder.api.model.Kit;
+import com.hackathon.camerabuilder.api.model.KitItem;
 import com.hackathon.camerabuilder.api.model.Lens;
 import com.hackathon.camerabuilder.api.model.NetworkCallBack;
 import com.hackathon.camerabuilder.api.model.Product;
@@ -18,27 +24,68 @@ import com.hackathon.camerabuilder.databinding.ActivityKitBinding;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class KitActivity extends BaseActivity<ActivityKitBinding> implements DialogProductSelect.DialogActionListener{
+public class KitActivity extends BaseActivity<ActivityKitBinding> implements DialogProductSelect.DialogActionListener , KitProductAdapter.OnDeleteListener {
 
     private ArrayList<Product> products;
     private boolean isCamSelected = false;
+    private int id = -1 ;
+    private KitProductAdapter kitProductAdapter;
+
 
     public static void launch(Activity activity) {
         activity.startActivity(new Intent(activity, KitActivity.class));
     }
+
+    public static void launch(Context context, ActualKit actualKit) {
+        Intent intent = new Intent(context, KitActivity.class);
+        intent.putExtra("kit", new Gson().toJson(actualKit));
+        context.startActivity(intent);
+    }
+
     @Override
     public int getLayoutResource() {
         return R.layout.activity_kit;
     }
 
-    private KitProductAdapter kitProductAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewDataBinding.toolbar.setNavigationOnClickListener(view -> finish());
         mViewDataBinding.rvKit.setLayoutManager(new LinearLayoutManager(this));
-        products = new ArrayList<>();
-        kitProductAdapter = new KitProductAdapter(products);
+        if (getIntent().getExtras() != null) {
+            products = new ArrayList<>();
+            ActualKit actualKit = new Gson().fromJson(getIntent().getExtras().getString("kit"), ActualKit.class);
+            id = actualKit.getId();
+            for (KitItem kitItem: actualKit.getKitItems()){
+                switch (kitItem.getTag()) {
+                    case "camera":
+                        Camera camera = new Gson().fromJson(kitItem.getProduct(), Camera.class);
+                        isCamSelected = true;
+                        mViewDataBinding.btnChoose.setText(R.string.scx);
+                        products.add(camera);
+                        break;
+
+                    case "lens":
+                        Lens lens = new Gson().fromJson(kitItem.getProduct(), Lens.class);
+                        products.add(lens);
+                        break;
+
+                    case "adapter":
+                        Adapter adapter = new Gson().fromJson(kitItem.getProduct(), Adapter.class);
+                        products.add(adapter);
+                        break;
+
+                    case "flash":
+                        Flash flash = new Gson().fromJson(kitItem.getProduct(), Flash.class);
+                        products.add(flash);
+                        break;
+                }
+            }
+        }
+        else {
+            products = new ArrayList<>();
+        }
+        kitProductAdapter = new KitProductAdapter(products, this);
 
         mViewDataBinding.btnRefresh.setOnClickListener(view -> {
             isCamSelected = false;
@@ -69,38 +116,40 @@ public class KitActivity extends BaseActivity<ActivityKitBinding> implements Dia
         });
 
         mViewDataBinding.btnSave.setOnClickListener(view -> {
+            mViewDataBinding.progressCircular.setVisibility(View.VISIBLE);
             if (products == null || products.size() == 0) {
                 Toast.makeText(this, "Please add item", Toast.LENGTH_LONG).show();
                 return;
             }
             Kit kit = new Kit();
+            kit.setId(id);
             kit.setUserId(repository.getUserInfo().getId());
-            String items = "";
+            StringBuilder items = new StringBuilder();
             Iterator<Product> iterator = products.iterator();
             while (iterator.hasNext()){
                 Product product = iterator.next();
                 if (product instanceof Camera) {
-                    items += "c"+ product.getId();
+                    items.append("c").append(product.getId());
                 }
 
                 if (product instanceof Adapter) {
-                    items += "a"+ product.getId();
+                    items.append("a").append(product.getId());
                 }
 
                 if (product instanceof Flash) {
-                    items += "f"+ product.getId();
+                    items.append("f").append(product.getId());
                 }
 
                 if (product instanceof Lens) {
-                    items += "l"+ product.getId();
+                    items.append("l").append(product.getId());
                 }
                 if (iterator.hasNext()){
-                    items += ",";
+                    items.append(",");
                 }
             }
-            kit.setItems(items);
-            repository.createKit(kit, new NetworkCallBack() {
+            kit.setItems(items.toString());
 
+            repository.createKit(kit, new NetworkCallBack() {
                 @Override
                 public void onError(String message) {
                     runOnUiThread(() -> {
@@ -146,22 +195,14 @@ public class KitActivity extends BaseActivity<ActivityKitBinding> implements Dia
             repository.getAllLenses(new NetworkCallBack<ArrayList<Lens>>() {
                 @Override
                 public void onError(String message) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(KitActivity.this, message, Toast.LENGTH_SHORT).show();
-                            mViewDataBinding.progressCircular.setVisibility(View.GONE);
-                        }
+                    runOnUiThread(() -> {
+                        Toast.makeText(KitActivity.this, message, Toast.LENGTH_SHORT).show();
+                        mViewDataBinding.progressCircular.setVisibility(View.GONE);
                     });
                 }
                 @Override
                 public void onSuccess(ArrayList<Lens> data, String message) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mViewDataBinding.progressCircular.setVisibility(View.GONE);
-                        }
-                    });
+                    runOnUiThread(() -> mViewDataBinding.progressCircular.setVisibility(View.GONE));
                     ArrayList<Product> lenses = new ArrayList<>(data);
                     DialogProductSelect dialogProductSelect = new DialogProductSelect(KitActivity.this, lenses);
                     dialogProductSelect.show(getSupportFragmentManager(), "lenses");
@@ -238,4 +279,37 @@ public class KitActivity extends BaseActivity<ActivityKitBinding> implements Dia
         products.add(lens);
         kitProductAdapter.notifyItemRangeChanged(0, products.size());
     }
+
+    @Override
+    public void onDelete(int position) {
+
+        new MaterialAlertDialogBuilder(
+                this)
+                .setMessage("Are you sure you want to delete the item ?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+                    kitProductAdapter.delete(position);
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                })
+                .setCancelable(false)
+                .show();
+
+    }
+
+    @Override
+    public void OnCamDeleted() {
+        isCamSelected = false;
+        mViewDataBinding.btnChoose.setText("Please choose a camera");
+        ArrayList<Integer> counters = new ArrayList<>();
+        for (int i = 0 ; i < products.size(); i++) {
+            if (products.get(i) instanceof Lens || products.get(i) instanceof Adapter) {
+                counters.add(i);
+            }
+        }
+
+        kitProductAdapter.deleteAll(counters);
+    }
+
 }

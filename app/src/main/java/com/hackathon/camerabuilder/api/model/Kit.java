@@ -4,11 +4,18 @@ import java.util.ArrayList;
 
 public class Kit {
 
+    private int id;
     private String items;
     private boolean isOver;
     private Integer userId;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getItems() {
         return items;

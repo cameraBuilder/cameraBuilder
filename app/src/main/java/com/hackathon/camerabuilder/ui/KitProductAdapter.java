@@ -8,6 +8,7 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,8 +28,11 @@ import static com.hackathon.camerabuilder.api.ApiHelper.host;
 public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.ProductRadioViewHolder> {
 
     private ArrayList<Product> products;
-    KitProductAdapter(ArrayList<Product> products) {
+    private OnDeleteListener onDeleteListener;
+
+    KitProductAdapter(ArrayList<Product> products, OnDeleteListener onDeleteListener) {
         this.products = products;
+        this.onDeleteListener = onDeleteListener;
     }
 
     @NonNull
@@ -42,6 +46,10 @@ public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.Pr
 
         Context context = holder.itemView.getContext();
         Product product = products.get(position);
+
+        holder.btnClose.setOnClickListener(view ->{
+            onDeleteListener.onDelete(position);
+        });
 
         SpannableString spannableNameContent=new SpannableString(String.format("%s %s", context.getResources().getString(R.string.name_bold), product.getName()));
         spannableNameContent.setSpan(new StyleSpan(Typeface.BOLD),
@@ -92,6 +100,25 @@ public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.Pr
             holder.sdProduct.setImageURI(host + product.getImages().split(",")[0]);
         }
 
+
+    }
+
+
+    public void delete(int position) {
+        Product removedItem = products.get(position);
+        products.remove(position);
+        if (removedItem instanceof Camera) {
+            onDeleteListener.OnCamDeleted();
+        }
+        notifyDataSetChanged();
+    }
+
+
+    public void deleteAll(ArrayList<Integer> positions) {
+        for (Integer pos: positions) {
+            products.remove(pos % products.size());
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -105,6 +132,7 @@ public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.Pr
         TextView tvBrand;
         TextView tvType;
         TextView tvMount;
+        ImageButton btnClose;
         SimpleDraweeView sdProduct;
 
         ProductRadioViewHolder(@NonNull View itemView) {
@@ -114,7 +142,13 @@ public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.Pr
             tvMount = itemView.findViewById(R.id.tv_mount);
             tvType = itemView.findViewById(R.id.tv_type);
             sdProduct = itemView.findViewById(R.id.sd_product);
+            btnClose = itemView.findViewById(R.id.btn_close);
 
         }
+    }
+
+    public  interface OnDeleteListener {
+        void onDelete(int position);
+        void OnCamDeleted();
     }
 }

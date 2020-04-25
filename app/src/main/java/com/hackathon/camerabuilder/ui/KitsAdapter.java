@@ -17,9 +17,11 @@ import static java.lang.String.format;
 public class KitsAdapter extends RecyclerView.Adapter<KitsAdapter.KitsViewHolder>{
 
     private ArrayList<KitWithProducts> kitWithProducts;
+    private OnKitListener onKitListener;
 
-    public KitsAdapter(ArrayList<KitWithProducts> kitWithProducts) {
+    public KitsAdapter(ArrayList<KitWithProducts> kitWithProducts, OnKitListener onKitListener) {
         this.kitWithProducts = kitWithProducts;
+        this.onKitListener = onKitListener;
     }
 
     @NonNull
@@ -28,10 +30,12 @@ public class KitsAdapter extends RecyclerView.Adapter<KitsAdapter.KitsViewHolder
         return new KitsViewHolder(View.inflate(parent.getContext(), R.layout.row_kit, null));
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull KitsAdapter.KitsViewHolder holder, int position) {
         KitWithProducts kitWithProduct = kitWithProducts.get(position);
         holder.tvId.setText(format("# %d", kitWithProduct.getId()));
+        holder.itemView.setOnClickListener(view -> onKitListener.onKitClick(position));
         int counter = 0;
         for (Product product:kitWithProduct.getProducts()) {
             if (counter < 8) {
@@ -105,5 +109,10 @@ public class KitsAdapter extends RecyclerView.Adapter<KitsAdapter.KitsViewHolder
             tvId = itemView.findViewById(R.id.tv_id);
         }
 
+    }
+
+    public interface OnKitListener {
+
+        void onKitClick(int position);
     }
 }
