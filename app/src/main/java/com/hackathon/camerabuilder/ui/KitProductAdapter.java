@@ -1,5 +1,6 @@
 package com.hackathon.camerabuilder.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -10,12 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.hackathon.camerabuilder.R;
 import com.hackathon.camerabuilder.api.model.Camera;
 import com.hackathon.camerabuilder.api.model.Lens;
@@ -35,6 +33,7 @@ public class KitProductAdapter extends RecyclerView.Adapter<KitProductAdapter.Pr
         this.onDeleteListener = onDeleteListener;
     }
 
+    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public ProductRadioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
