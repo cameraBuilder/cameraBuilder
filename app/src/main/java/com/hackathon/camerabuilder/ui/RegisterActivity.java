@@ -39,8 +39,8 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
 
         mViewDataBinding.btnRegister.setOnClickListener(view -> {
             mViewDataBinding.progressCircular.setVisibility(View.VISIBLE);
-            repository.login( mViewDataBinding.etEmail.getText().toString(),
-                    mViewDataBinding.etPassword.getText().toString(), new NetworkCallBack<UserInfo>() {
+            repository.register( mViewDataBinding.etEmail.getText().toString(),
+                    mViewDataBinding.etPassword.getText().toString(), mViewDataBinding.etUsername.getText().toString(),new NetworkCallBack<UserInfo>() {
 
                         @Override
                         public void onError(String message) {
@@ -73,7 +73,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mViewDataBinding.tvUsername.setVisibility(TextUtils.isEmpty(charSequence.toString()) ? View.VISIBLE:View.GONE);
-                isUserName = TextUtils.isEmpty(charSequence.toString());
+                isUserName = !TextUtils.isEmpty(charSequence.toString());
                 mViewDataBinding.btnRegister.setEnabled(isPassword && isUserName && isEmail);
             }
 
