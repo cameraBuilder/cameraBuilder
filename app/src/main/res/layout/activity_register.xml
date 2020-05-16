@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:textSize="11sp"
             android:visibility="gone"
-            android:text="@string/password_mut_contain_at_least_8_characters_with_upper_case_and_special_characters"
+            android:text="@string/required"
             android:textColor="@color/colorAccent"/>
 
         <com.google.android.material.textview.MaterialTextView

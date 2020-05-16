@@ -45,4 +45,5 @@
     <string name="note_maximum_8_items_are_shown_if_you_want_to_view_all_press_on_item">Note: maximum 8 items are shown if you want to view all press on item</string>
     <string name="invalid_email">Invalid email</string>
     <string name="password_mut_contain_at_least_8_characters_with_upper_case_and_special_characters">Password must contain at least 8 and at most 20 characters with upper case and special characters</string>
+    <string name="required">Required</string>
 </resources>
